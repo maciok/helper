@@ -44,7 +44,7 @@ import { UserModule } from "./user/user.module";
     ReactiveFormsModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatDividerModule
+    MatDividerModule,
     UserModule
   ],
   providers: [],

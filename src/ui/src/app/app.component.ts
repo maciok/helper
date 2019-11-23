@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
           if (err.status == 401) {
             window.location.href = "/oauth2/authorization/google"
           } else {
-            alert("Something went wrong") //todo
+            console.log("Something went wrong") //todo
           }
         }
       )
