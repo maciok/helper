@@ -1,0 +1,41 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <p>
+    <mat-form-field>
+      <mat-label>Przedział czasowy</mat-label>
+      <mat-select [formControl]="timeboxControl">
+        <mat-option [value]="0">Natychmiast (zagrożenie zdrowia i życia)</mat-option>
+        <mat-option [value]="1">Godzina</mat-option>
+        <mat-option [value]="2">Dzisiaj</mat-option>
+        <mat-option [value]="3">Nieokreślony</mat-option>
+      </mat-select>
+      <mat-hint align="end">Wybierz w jakim terminie potrzebujesz pomocy.</mat-hint>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field>
+      <mat-label>Rodzaj pomocy</mat-label>
+      <mat-select [formControl]="categoryControl">
+        <mat-option [value]="0">Transport</mat-option>
+        <mat-option [value]="1">Komunikacja</mat-option>
+      </mat-select>
+      <mat-hint align="end">Określ rodzaj wsparcia jakie potrzebujesz.</mat-hint>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field>
+      <label for="description" class="sr-only">Opis problemu (opcjonalnie)</label>
+      <textarea id="description" matInput placeholder="Opis problemu (opcjonalnie)"
+                [formControl]="descriptionControl"></textarea>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-checkbox [formControl]="localizationConsentControl">Udostępnij swoją lokalizację
+    </mat-checkbox>
+  </p>
+  <p>
+    <mat-divider></mat-divider>
+  </p>
+  <p>
+    <button type="submit" mat-raised-button color="primary">Wyślij zgłoszenie</button>
+  </p>
+</form>

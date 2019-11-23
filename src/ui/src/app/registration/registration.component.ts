@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { User } from "../model/user.model";
 import { Role } from "../model/role.model";
 import { UserService } from "../user/user.service";
+import { switchMap } from "rxjs/operators";
 
 @Component({
   selector: 'app-registration',
@@ -20,15 +21,15 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
-    const user = this.userService.user;
-    console.log(user);
-    /*const user = {
+    /*const user = this.userService.user;
+    console.log(user);*/
+    const user = {
       firstName: null,
       lastName: null,
       age: null,
       disabilities: [],
       roles: [Role.NECESSITOUS, Role.VOLUNTEER],
-    } as User;*/
+    } as User;
     this.form = this.fb.group({
       firstName: this.fb.control(user.firstName, Validators.required),
       lastName: this.fb.control(user.lastName, Validators.required),
@@ -72,8 +73,13 @@ export class RegistrationComponent implements OnInit {
         disabilities: this.disabilitiesControl.value,
         roles: this.createRoles(),
       } as User;
-      // TODO save user
       console.log(user);
+      this.userService.save(user).pipe(
+        switchMap(() => this.userService.reload())
+      ).subscribe(
+        () => this.router.navigate(['']),
+        (error) => console.log(error)
+      )
     }
   }
 
