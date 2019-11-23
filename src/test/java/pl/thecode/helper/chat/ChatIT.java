@@ -26,16 +26,15 @@ class ChatIT {
   static String VOLUNTEER_ID = "7654321";
 
   @Autowired
-  private WebApplicationContext context;
+  WebApplicationContext context;
+
+  @Autowired
+  ConversationRepository conversationRepository;
 
   @BeforeEach
   void setup() {
     RestAssuredMockMvc.webAppContextSetup(context);
   }
-
-  @Autowired
-  ConversationRepository conversationRepository;
-
 
   @Test
   @WithMockUser()

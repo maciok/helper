@@ -1,16 +1,18 @@
 package pl.thecode.helper.user;
 
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import lombok.AllArgsConstructor;
+import org.springframework.data.mapping.model.AbstractPersistentProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-import static pl.thecode.helper.user.Warning.NOT_REGISTERED;
 
 @AllArgsConstructor
 @RestController
@@ -19,22 +21,34 @@ class UserEndpoint {
     private UserRepository userRepository;
 
     @GetMapping("/api/user")
-    ResponseEntity userInfo(@AuthenticationPrincipal OAuth2AuthenticationToken userInfo) {
+    ResponseEntity<UserResponse> userInfo(@AuthenticationPrincipal OAuth2User userInfo) {
         if (userInfo == null) {
             return ResponseEntity.status(UNAUTHORIZED).build();
         } else {
-            var uuid = (String) userInfo.getPrincipal().getAttribute("sub");
-            var givenName = (String) userInfo.getPrincipal().getAttribute("given_name");
-            var familyName = (String) userInfo.getPrincipal().getAttribute("family_name");
-            var picture = (String) userInfo.getPrincipal().getAttribute("picture");
+            var uuid = (String) userInfo.getAttribute("sub");
+            var givenName = (String) userInfo.getAttribute("given_name");
+            var familyName = (String) userInfo.getAttribute("family_name");
+            var picture = (String) userInfo.getAttribute("picture");
 
-
-            var userResponse = userRepository.findByUuid(uuid)
-                    .map(userEntity -> new UserResponse(givenName, familyName, picture, List.of(), null, List.of()))
-                    .orElseGet(() -> new UserResponse(givenName, familyName, picture, List.of(), null, List.of(NOT_REGISTERED)));
+            var userResponse =
+              userRepository.findByUuid(uuid)
+                .map(userEntity -> userEntity.createDto(givenName, familyName, picture))
+                .orElseGet(() -> UserResponse.notRegistered(givenName, familyName, picture));
 
 
             return ResponseEntity.ok(userResponse);
         }
+    }
+
+
+    @PostMapping(value = "/api/user", consumes = APPLICATION_JSON_VALUE )
+    ResponseEntity register(@RequestBody RegistrationRequest registrationRequest, @AuthenticationPrincipal OAuth2User userInfo) {
+        var uuid = (String) userInfo.getAttribute("sub");
+
+        var user = UserEntity.create(uuid, registrationRequest.getAge(), registrationRequest.getRoles(), registrationRequest.getDisabilities());
+
+        userRepository.save(user);
+
+        return ResponseEntity.status(CREATED).build();
     }
 }
