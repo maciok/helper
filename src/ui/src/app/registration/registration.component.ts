@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { User } from "../model/user.model";
+import { Role } from "../model/role.model";
 
 @Component({
   selector: 'app-registration',
@@ -7,9 +11,78 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistrationComponent implements OnInit {
 
-  constructor() { }
+  form: FormGroup;
 
-  ngOnInit() {
+  constructor(private fb: FormBuilder,
+              private router: Router) {
   }
 
+  ngOnInit() {
+    // TODO get logged user
+    const user = {
+      firstName: null,
+      lastName: null,
+      age: null,
+      disabilities: [],
+      roles: [Role.NECESSITOUS, Role.VOLUNTEER],
+    } as User;
+    this.form = this.fb.group({
+      firstName: this.fb.control(user.firstName, Validators.required),
+      lastName: this.fb.control(user.lastName, Validators.required),
+      age: this.fb.control(user.age, Validators.required),
+      disabilities: this.fb.control(user.disabilities),
+      needsHelp: this.fb.control(user.roles.includes(Role.NECESSITOUS)),
+      givesHelp: this.fb.control(user.roles.includes(Role.VOLUNTEER)),
+    })
+  }
+
+  get firstNameControl(): FormControl {
+    return this.form.get('firstName') as FormControl;
+  }
+
+  get lastNameControl(): FormControl {
+    return this.form.get('lastName') as FormControl;
+  }
+
+  get ageControl(): FormControl {
+    return this.form.get('age') as FormControl;
+  }
+
+  get disabilitiesControl(): FormControl {
+    return this.form.get('disabilities') as FormControl;
+  }
+
+  get needsHelpControl(): FormControl {
+    return this.form.get('needsHelp') as FormControl;
+  }
+
+  get givesHelpControl(): FormControl {
+    return this.form.get('givesHelp') as FormControl;
+  }
+
+  onSubmit(): void {
+    if (this.form.valid) {
+      const user = {
+        firstName: this.firstNameControl.value,
+        lastName: this.lastNameControl.value,
+        age: this.ageControl.value,
+        disabilities: this.disabilitiesControl.value,
+        roles: this.createRoles(),
+      } as User;
+      // TODO save user
+      console.log(user);
+    }
+  }
+
+  private createRoles(): Role[] {
+    const roles = [];
+    if (this.needsHelpControl.value) {
+      roles.push(Role.NECESSITOUS);
+    }
+    if (this.givesHelpControl.value) {
+      roles.push(Role.VOLUNTEER);
+    }
+    console.log(roles);
+    return roles;
+  }
 }
