@@ -20,6 +20,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDividerModule } from "@angular/material/divider";
+import { UserModule } from "./user/user.module";
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { MatDividerModule } from "@angular/material/divider";
     MatSelectModule,
     MatCheckboxModule,
     MatDividerModule
+    UserModule
   ],
   providers: [],
   bootstrap: [AppComponent]

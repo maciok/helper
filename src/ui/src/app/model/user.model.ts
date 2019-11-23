@@ -1,5 +1,6 @@
 import { Role } from "./role.model";
 import { Disabilities } from "./disabilities.model";
+import { UserWarning } from "./user-warning.model";
 
 export interface User {
   firstName: string;
@@ -7,4 +8,5 @@ export interface User {
   roles: Role[];
   disabilities: Disabilities[];
   age: number;
+  warnings: UserWarning[]
 }
