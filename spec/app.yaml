@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: helper
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: helper
+      labels:
+        app: helper
+    spec:
+      containers:
+        - name: helper
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: password
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: hostname-config
+                  key: postgres_host
+          image: gcr.io/durable-epoch-259807/helper:latest
