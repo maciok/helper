@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { UserService } from "../user/user.service";
 import { Router } from "@angular/router";
+import { HttpClient } from "@angular/common/http";
+import { HelpRequestsService } from "../service/help-requests.service";
+import { HelpRequest } from "../model/help-request.model";
 
 @Component({
   selector: 'app-request-help',
@@ -13,7 +15,7 @@ export class RequestHelpComponent implements OnInit {
   form: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private userService: UserService,
+              private service: HelpRequestsService,
               private router: Router) {
   }
 
@@ -44,7 +46,23 @@ export class RequestHelpComponent implements OnInit {
 
   onSubmit(): void {
     if (this.form.valid) {
-
+      const locationConsent = this.localizationConsentControl.value;
+      if (locationConsent) {
+        navigator.geolocation.getCurrentPosition(
+          position => this.saveHelpRequest(position.coords));
+      } else {
+        this.saveHelpRequest(null);
+      }
     }
+  }
+
+  private saveHelpRequest(coords: Coordinates): void {
+    const req = {
+      timebox: this.timeboxControl.value,
+      category: this.categoryControl.value,
+      description: this.descriptionControl. value,
+      coords: coords
+    } as HelpRequest;
+    this.service.save(req).subscribe(() => this.router.navigate(['']));
   }
 }
