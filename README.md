@@ -5,12 +5,17 @@
 Install Google Cloud CLI and init it: https://cloud.google.com/sdk/docs/quickstart-linux
 Install Kubernetes CLI: https://kubernetes.io/docs/tasks/tools/install-kubectl/
 
+
+### Create cluster
 Create cluster ( probably using web console because it's easier for noobs )
 
+
+### Setup connection with k8s
 ```bash
 export PROJECT_ID=durable-epoch-259807
 gcloud config set project $PROJECT_ID
 gcloud config set compute/zone europe-west2-a
+gcloud auth login
 gcloud container clusters get-credentials helper
 ```
 
@@ -21,7 +26,7 @@ kubectl get pods
 
 ### Secrets
 ```bash
-kubectl create secret generic dev-db-secret --from-literal=username=devuser --from-literal=password='cos'
+kubectl create secret generic postgres-secrets --from-literal=user=devuser --from-literal=password='cos'
 kubectl get secret mysecret -o yaml
 # then
 echo 'encoded pass' | base64 --decode
