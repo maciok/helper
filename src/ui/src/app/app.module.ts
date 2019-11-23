@@ -9,11 +9,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RegistrationComponent } from './registration/registration.component';
 import { MatMenuModule } from "@angular/material/menu";
 import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatCardModule } from "@angular/material/card";
+import { MatGridListModule } from "@angular/material/grid-list";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +29,13 @@ import { MatIconModule } from "@angular/material/icon";
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
     BrowserAnimationsModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatGridListModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

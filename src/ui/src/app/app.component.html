@@ -1,18 +1,14 @@
-<h1>Witaj w aplikacji!</h1>
+<mat-toolbar>
+  <mat-menu #appMenu="matMenu">
+    <button mat-menu-item>Zgłoś potrzebę pomocy</button>
+    <button mat-menu-item>Twój profil</button>
+  </mat-menu>
 
-<mat-menu #appMenu="matMenu">
-  <button mat-menu-item>Settings</button>
-  <button mat-menu-item>Help</button>
-  <button mat-menu-item>
-    <mat-icon>notifications_off</mat-icon>
-    <span>Disable alerts</span>
+  <button mat-raised-button [matMenuTriggerFor]="appMenu">
+    <mat-icon>more_vert</mat-icon>
+    Menu
   </button>
-</mat-menu>
-
-<button mat-icon-button [matMenuTriggerFor]="appMenu">
-  <!-- pass local reference of mat-menu to be opened on this click -->
-  <mat-icon>more_vert</mat-icon>
-</button>
+</mat-toolbar>
 
 
 <router-outlet></router-outlet>
