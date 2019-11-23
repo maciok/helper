@@ -1,5 +1,55 @@
-<form>
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="imię">
-  </mat-form-field>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <p>
+    <mat-form-field>
+      <label for="firstName" class="sr-only">Imię</label>
+      <input id="firstName" matInput placeholder="Imię" [formControl]="firstNameControl">
+      <mat-error *ngIf="!firstNameControl.valid && firstNameControl.touched">
+        Imię jest wymagane
+      </mat-error>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field>
+      <label for="lastName" class="sr-only">Nazwisko</label>
+      <input id="lastName" matInput placeholder="Nazwisko" [formControl]="lastNameControl">
+      <mat-error *ngIf="!lastNameControl.valid && lastNameControl.touched">
+        Nazwisko jest wymagane
+      </mat-error>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field>
+      <label for="age" class="sr-only">Wiek</label>
+      <input id="age" matInput placeholder="Wiek" [formControl]="ageControl">
+      <mat-error *ngIf="!ageControl.valid && ageControl.touched">
+        Wiek jest wymagany
+      </mat-error>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field>
+      <mat-label>Rodzaj niepełnosprawności</mat-label>
+      <mat-select [formControl]="disabilitiesControl" multiple>
+        <mat-option [value]="0">Ruchowa</mat-option>
+        <mat-option [value]="1">Słuchowa</mat-option>
+        <mat-option [value]="2">Wzrokowa</mat-option>
+        <mat-option [value]="3">Umysłowa</mat-option>
+        <mat-option [value]="4">Choroba przewlekła</mat-option>
+        <mat-option [value]="5">CHoroby kręgosłupa</mat-option>
+        <mat-option [value]="6">Alergie</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-checkbox [formControl]="givesHelpControl">Chętnie udzielę pomocy</mat-checkbox>
+  </p>
+  <p>
+    <mat-checkbox [formControl]="needsHelpControl">Chętnie przyjmę pomoc</mat-checkbox>
+  </p>
+  <p>
+    <mat-divider></mat-divider>
+  </p>
+  <p>
+    <button type="submit" mat-raised-button>Zarejestruj</button>
+  </p>
 </form>

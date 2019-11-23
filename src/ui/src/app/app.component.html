@@ -1,14 +1,20 @@
 <mat-toolbar>
+
+  <!--<button mat-icon-button>
+    <mat-icon>arrow_back</mat-icon>
+  </button>-->
+
+  <span>Pomocownik</span>
+
   <mat-menu #appMenu="matMenu">
-    <button mat-menu-item>Zgłoś potrzebę pomocy</button>
     <button mat-menu-item>Twój profil</button>
+    <button mat-menu-item routerLink="/registration">Rejestracja</button>
   </mat-menu>
 
-  <button mat-raised-button [matMenuTriggerFor]="appMenu">
+  <button id="menuBtn" mat-icon-button [matMenuTriggerFor]="appMenu">
     <mat-icon>more_vert</mat-icon>
-    Menu
   </button>
-</mat-toolbar>
 
+</mat-toolbar>
 
 <router-outlet></router-outlet>
