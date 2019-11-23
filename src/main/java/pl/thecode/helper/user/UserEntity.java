@@ -1,12 +1,16 @@
 package pl.thecode.helper.user;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = UserEntity.TABLE_NAME)
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 class UserEntity {
     static final String TABLE_NAME = "app_user";
     private static final String SEQ_NAME = TABLE_NAME + "_seq";
@@ -21,6 +25,20 @@ class UserEntity {
 
     @Basic
     private String uuid;
+
+    @Basic
+    private Integer age;
+
+    @Basic
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private String roles;
+
+    static UserEntity create(String uuid, Integer age, List<Role> roles) {
+        return new UserEntity(null, uuid, age, roles.stream().map(Role::name).collect(Collectors.joining(",")));
+    }
+
+
 
 
 }
