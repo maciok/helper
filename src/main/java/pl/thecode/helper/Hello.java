@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
 @RestController
 class Hello {
 
@@ -19,11 +21,15 @@ class Hello {
 
   @GetMapping("/api/user")
   ResponseEntity userInfo(@AuthenticationPrincipal OAuth2AuthenticationToken userInfo) {
-    var givenName = userInfo.getPrincipal().getAttribute("given_name");
-    var familyName = userInfo.getPrincipal().getAttribute("family_name");
-    var picture = userInfo.getPrincipal().getAttribute("picture");
+    if (userInfo == null) {
+      return ResponseEntity.status(UNAUTHORIZED).build();
+    } else {
+      var givenName = userInfo.getPrincipal().getAttribute("given_name");
+      var familyName = userInfo.getPrincipal().getAttribute("family_name");
+      var picture = userInfo.getPrincipal().getAttribute("picture");
 
-    return ResponseEntity.ok(Map.of("givenName", givenName, "familyName", familyName, "picture", picture));
+      return ResponseEntity.ok(Map.of("givenName", givenName, "familyName", familyName, "picture", picture));
+    }
   }
 
 }
