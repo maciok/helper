@@ -26,6 +26,10 @@ export class UserService {
     }
   }
 
+  save(user: User): Observable<any> {
+    return this.http.post("/api/user", user);
+  }
+
   reload(): Observable<User> {
     console.log("Reloading user");
     this.user = null;

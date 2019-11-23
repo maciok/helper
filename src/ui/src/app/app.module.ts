@@ -21,12 +21,14 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDividerModule } from "@angular/material/divider";
 import { UserModule } from "./user/user.module";
+import { RequestHelpComponent } from './request-help/request-help.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegistrationComponent,
-    DashboardComponent
+    DashboardComponent,
+    RequestHelpComponent
   ],
   imports: [
     BrowserModule,
