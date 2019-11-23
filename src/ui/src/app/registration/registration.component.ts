@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms"
 import { Router } from "@angular/router";
 import { User } from "../model/user.model";
 import { Role } from "../model/role.model";
+import { UserService } from "../user/user.service";
 
 @Component({
   selector: 'app-registration',
@@ -14,18 +15,20 @@ export class RegistrationComponent implements OnInit {
   form: FormGroup;
 
   constructor(private fb: FormBuilder,
+              private userService: UserService,
               private router: Router) {
   }
 
   ngOnInit() {
-    // TODO get logged user
-    const user = {
+    const user = this.userService.user;
+    console.log(user);
+    /*const user = {
       firstName: null,
       lastName: null,
       age: null,
       disabilities: [],
       roles: [Role.NECESSITOUS, Role.VOLUNTEER],
-    } as User;
+    } as User;*/
     this.form = this.fb.group({
       firstName: this.fb.control(user.firstName, Validators.required),
       lastName: this.fb.control(user.lastName, Validators.required),
