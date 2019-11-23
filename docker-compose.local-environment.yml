@@ -1,0 +1,26 @@
+#Compose environment for INGO-API such as
+# - database
+# - cache
+# - mocks if cannot be created with wiremock
+
+version: '3.5'
+
+services:
+  ingo_postgres_db:
+    image: postgres:10.3-alpine
+
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=helper
+      - POSTGRES_PASSWORD=mysecretpassword
+    ports:
+      - "5432:5432"
+
+    networks:
+      main:
+        aliases:
+        - helper_db
+
+networks:
+  main:
+    driver: bridge
