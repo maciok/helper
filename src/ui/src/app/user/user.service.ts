@@ -3,6 +3,8 @@ import {HttpClient} from "@angular/common/http";
 import {map, tap} from "rxjs/operators";
 import {User} from "../model/user.model";
 import {Observable, of} from "rxjs";
+import {UserResponse} from "./user.response";
+import {UserWarning} from "../model/user-warning.model";
 
 @Injectable()
 export class UserService {
@@ -16,7 +18,7 @@ export class UserService {
     if (this.user == null) {
       return this.http.get("/api/user")
         .pipe(
-          map((r: UserResponse) => this.userFromResponse(r)),
+          map((r: UserResponse) => UserService.userFromResponse(r)),
           tap((user: User) => this.user = user)
         )
     } else {
@@ -24,14 +26,21 @@ export class UserService {
     }
   }
 
+  reload(): Observable<User> {
+    console.log("Reloading user");
+    this.user = null;
+    return this.load();
+  }
 
-  private userFromResponse(response: UserResponse): User {
+
+  private static userFromResponse(response: UserResponse): User {
     return {
-      firstName: response.firstName,
-      lastName: response.lastName,
-      roles: null,
+      firstName: response.givenName,
+      lastName: response.familyName,
+      roles: response.roles,
       disabilities: null,
-      age: null,
+      age: response.age,
+      warnings: response.warnings.map(w => UserWarning[w]),
     }
   }
 }
