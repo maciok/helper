@@ -1,6 +1,19 @@
 <h4>Prośby o pomoc:</h4>
+<!--<div #mapRef style="width:100%;height:400px"></div>-->
 <mat-accordion>
+  <mat-expansion-panel (opened)="mockedItem.open = true" (closed)="mockedItem.open = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ mockedItem.category }}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ mockedItem.timeBox }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <p>{{ mockedItem.description }}</p>
 
+    <button mat-raised-button color="primary" (click)="offerHelp(mockedItem.id)">Zaoferuj swoją pomoc</button>
+  </mat-expansion-panel>
   <ng-container *ngFor="let item of items; let i = index;">
   <mat-expansion-panel (opened)="item.open = true" (closed)="item.open = false">
     <mat-expansion-panel-header>
@@ -12,7 +25,6 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <p>{{ item.description }}</p>
-<!--    <div *ngIf="i === 0" #mapRef style="width:100%;height:400px"></div>-->
     <button mat-raised-button color="primary" (click)="offerHelp(item.id)">Zaoferuj swoją pomoc</button>
   </mat-expansion-panel>
   </ng-container>

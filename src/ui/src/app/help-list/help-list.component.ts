@@ -1,8 +1,7 @@
-import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { HelpListItem } from "../model/help-list-item.model";
-import { HelpCategory } from "../model/help-category.model";
-import { Timebox } from "../model/timebox.model";
-import {} from 'googlemaps';
+import {Component, OnInit} from '@angular/core';
+import {HelpListItem} from "../model/help-list-item.model";
+import {HelpCategory} from "../model/help-category.model";
+import {Timebox} from "../model/timebox.model";
 
 @Component({
   selector: 'app-help-list',
@@ -12,6 +11,7 @@ import {} from 'googlemaps';
 export class HelpListComponent implements OnInit {
 
   items: HelpListItem[] = [];
+  mockedItem: HelpListItem;
 
   // @ViewChild('mapRef', {static: true}) mapElement: ElementRef;
   map: google.maps.Map;
@@ -19,6 +19,16 @@ export class HelpListComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
+    this.mockedItem = {
+      id: 999,
+      category: HelpCategory.TRANSPORT,
+      description: 'Potrzebuję pomocy w pomocy w dotarciu do Starej Iwnicznej',
+      timeBox: Timebox.DAY,
+      localization: '123_123',
+      open: false,
+    } as HelpListItem
+
     const sampleItem1 = {
       id: 1,
       category: HelpCategory.TRANSPORT,
