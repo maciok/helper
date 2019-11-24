@@ -1,33 +1,30 @@
 package pl.thecode.helper.help;
 
-import static java.lang.String.format;
-import static java.util.Objects.isNull;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.thecode.helper.chat.ChatDto;
 import pl.thecode.helper.chat.ChatFacade;
+import pl.thecode.helper.notification.NotificationService;
 import pl.thecode.helper.user.UserFacade;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.lang.String.format;
+import static java.util.Objects.isNull;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @AllArgsConstructor
 class HelpResource {
 
   private final HelpRepository helpRepository;
+  private final NotificationService notificationService;
   private final UserFacade userFacade;
   private final ChatFacade chatFacade;
   
@@ -47,7 +44,9 @@ class HelpResource {
       helpRequest.getDescription()
     );
 
-    helpRepository.save(help);
+    HelpEntity savedHelp = helpRepository.save(help);
+    List<String> nearbyUsers = userFacade.getNearbyUsersUuidExcept(uuid);
+    notificationService.notifyUsers(nearbyUsers, savedHelp.getId());
     return ResponseEntity.status(CREATED).build();
   }
 

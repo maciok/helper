@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { User } from "../model/user.model";
-import { Role } from "../model/role.model";
-import { UserService } from "../user/user.service";
-import { switchMap } from "rxjs/operators";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
+import {User} from "../model/user.model";
+import {Role} from "../model/role.model";
+import {UserService} from "../user/user.service";
+import {switchMap} from "rxjs/operators";
+import {NotificationService} from "./notification.service";
 
 @Component({
   selector: 'app-registration',
@@ -17,15 +18,15 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
-              private router: Router) {
+              private router: Router,
+              private notificationService: NotificationService,
+  ) {
   }
 
   ngOnInit() {
-    /*const user = this.userService.user;
-    console.log(user);*/
+    const userFromBackend = this.userService.user;
     const user = {
-      firstName: null,
-      lastName: null,
+      ...userFromBackend,
       age: null,
       disabilities: [],
       roles: [Role.NECESSITOUS, Role.VOLUNTEER],
@@ -37,7 +38,9 @@ export class RegistrationComponent implements OnInit {
       disabilities: this.fb.control(user.disabilities),
       needsHelp: this.fb.control(user.roles.includes(Role.NECESSITOUS)),
       givesHelp: this.fb.control(user.roles.includes(Role.VOLUNTEER)),
-    })
+    });
+
+    console.log("Subscribing to actions");
   }
 
   get firstNameControl(): FormControl {
@@ -65,6 +68,8 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.notificationService.subscribeToNotifications();
+
     if (this.form.valid) {
       const user = {
         firstName: this.firstNameControl.value,
