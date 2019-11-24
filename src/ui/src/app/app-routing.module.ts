@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { RequestHelpComponent } from "./request-help/request-help.component";
 import { HelpListComponent } from "./help-list/help-list.component";
+import { ChatComponent } from "./chat/chat.component";
 
 
 const routes: Routes = [
@@ -11,6 +12,7 @@ const routes: Routes = [
   {path: 'registration', component: RegistrationComponent},
   {path: 'request-help', component: RequestHelpComponent},
   {path: 'help-list', component: HelpListComponent},
+  {path: 'chat', component: ChatComponent},
   {path: '**', redirectTo: '/dashboard'},
 ];
 

@@ -24,9 +24,10 @@ import {UserModule} from "./user/user.module";
 import {NotificationService} from "./registration/notification.service";
 import {RequestHelpComponent} from './request-help/request-help.component';
 import {HttpClientModule} from "@angular/common/http";
-import {HelpListComponent} from "./help-list/help-list.component";
-import {MatExpansionModule} from "@angular/material/expansion";
-import {HelpService} from "./help-list/help.service";
+import { HelpListComponent } from "./help-list/help-list.component";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { ChatComponent } from './chat/chat.component';
+import { MatListModule } from "@angular/material/list";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {HelpService} from "./help-list/help.service";
     DashboardComponent,
     RequestHelpComponent,
     HelpListComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +58,7 @@ import {HelpService} from "./help-list/help.service";
     UserModule,
     HttpClientModule,
     MatExpansionModule,
+    MatListModule,
   ],
   providers: [NotificationService, HelpService],
   bootstrap: [AppComponent]

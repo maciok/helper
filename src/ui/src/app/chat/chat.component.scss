@@ -1,0 +1,36 @@
+.volunteer {
+  background-color: red;
+  text-align: left;
+  margin-top: 1rem;
+
+  & > div.mat-list-item-content > span {
+    background-color: lightgreen !important;
+    margin-left: 2rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 1rem;
+  }
+}
+
+.needy {
+  background-color: blue;
+  text-align: right;
+
+  & > div.mat-list-item-content > span {
+    background-color: lightblue !important;
+    margin-right: 2rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 1rem;
+  }
+}
+
+mat-list-item {
+  margin-top: 1rem;
+}
+
+form {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  input {
+    width: 100%;
+  }
+}
