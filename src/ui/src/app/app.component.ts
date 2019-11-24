@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from "./user/user.service";
 import {Router} from "@angular/router";
 import {UserWarning} from "./model/user-warning.model";
+import {NotificationService} from "./registration/notification.service";
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {
   }
 
@@ -33,7 +35,15 @@ export class AppComponent implements OnInit {
             console.log("Something went wrong") //todo
           }
         }
-      )
+      );
+
+    console.log("Listening to notification actions");
+    this.notificationService.onAction().subscribe(
+      (action) => {
+        console.log("Received notification action", action);
+        this.router.navigate(["request-help"]) //todo when list will be available
+      }
+    )
 
 
   }

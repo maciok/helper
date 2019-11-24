@@ -56,7 +56,19 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-web</artifactId>
       </dependency>
-    <dependency>
+      <dependency>
+          <groupId>nl.martijndwars</groupId>
+          <artifactId>web-push</artifactId>
+          <version>5.0.2</version>
+      </dependency>
+      <dependency>
+          <groupId>org.bouncycastle</groupId>
+          <artifactId>bcprov-jdk15on</artifactId>
+          <version>1.64</version>
+      </dependency>
+
+
+      <dependency>
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
     </dependency>
