@@ -4,6 +4,7 @@ import {HelpCategory} from "../model/help-category.model";
 import {Timebox} from "../model/timebox.model";
 import {HelpService} from "./help.service";
 import {Help} from "../model/help-request.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-help-list',
@@ -18,7 +19,10 @@ export class HelpListComponent implements OnInit {
   @ViewChild('mapRef', {static: true}) mapElement: ElementRef;
   map: google.maps.Map;
 
-  constructor(private helpService: HelpService) {
+  constructor(
+    private helpService: HelpService,
+    private router: Router
+  ) {
   }
 
   ngOnInit() {
@@ -30,13 +34,9 @@ export class HelpListComponent implements OnInit {
       timeBox: Timebox.DAY,
       localization: '123_123',
       open: false,
-    } as HelpListItem
+    } as HelpListItem;
 
-    this.helpService.load()
-      .subscribe(
-        (response: Help[]) => this.items = HelpListComponent.itemsFromResponse(response),
-        err => console.error(err)
-      );
+    this.loadItems();
 
 
     const mapProperties = {
@@ -57,16 +57,35 @@ export class HelpListComponent implements OnInit {
   }
 
 
-
-  offerHelp(id: number): void {
-    // TODO
+  offerHelp(item: HelpListItem): void {
+    this.helpService.assign(item.id)
+      .subscribe(
+        (chat: { chatId }) => {
+          item.chatId = chat.chatId
+          item.state = "RESERVED"
+        }
+      )
   }
 
-  private static itemsFromResponse(response: Help[]) {
+  openChat(chatId: string): void {
+    this.router.navigate(["chat"], {queryParams: {id: chatId}})
+
+  }
+
+  private loadItems() {
+    this.helpService.load()
+      .subscribe(
+        (response: Help[]) => this.items = HelpListComponent.itemsFromResponse(response),
+        err => console.error(err)
+      );
+  }
+
+
+  private static itemsFromResponse(response: Help[]): HelpListItem[] {
     return response.map(h => HelpListComponent.itemFromHelp(h))
   }
 
-  private static itemFromHelp(help: Help) {
+  private static itemFromHelp(help: Help): HelpListItem {
     return {
       id: help.id,
       category: help.category,
@@ -74,6 +93,6 @@ export class HelpListComponent implements OnInit {
       timeBox: help.helpTimeBox,
       localization: null,
       open: false,
-    }
+    } as HelpListItem
   }
 }

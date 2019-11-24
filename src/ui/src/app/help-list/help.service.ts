@@ -20,6 +20,10 @@ export class HelpService {
       )
   }
 
+  public assign(helpId: string) {
+    return this.http.put(`/api/help/${helpId}/assigned`, null)
+  }
+
   private static helpFromResponse(h: HelpResponse): Help {
     return {
       id: h.id,

@@ -25,7 +25,16 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <p>{{ item.description }}</p>
-    <button mat-raised-button color="primary" (click)="offerHelp(item.id)">Zaoferuj swoją pomoc</button>
+    <ng-container *ngIf="!item.chatId">
+      <button mat-raised-button color="primary" (click)="offerHelp(item)">Zaoferuj swoją pomoc</button>
+    </ng-container>
+    <ng-container *ngIf="item.chatId">
+      <button mat-raised-button color="secondary" disabled="true" (click)="offerHelp(item)" style="margin-right: 10px">
+        Pomagam
+      </button>
+      <button mat-raised-button color="primary" (click)="openChat(item.chatId)">Chat</button>
+    </ng-container>
+
   </mat-expansion-panel>
   </ng-container>
 </mat-accordion>

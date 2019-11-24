@@ -1,28 +1,20 @@
 package pl.thecode.helper.help;
 
-import static java.util.function.Predicate.not;
-import static javax.persistence.EnumType.STRING;
-import static lombok.AccessLevel.PRIVATE;
-import static pl.thecode.helper.help.HelpEntity.TABLE_NAME;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnTransformer;
 import pl.thecode.helper.user.Disabilities;
+
+import javax.persistence.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.function.Predicate.not;
+import static javax.persistence.EnumType.STRING;
+import static lombok.AccessLevel.PRIVATE;
+import static pl.thecode.helper.help.HelpEntity.TABLE_NAME;
 
 
 // @todo add creation date
@@ -102,5 +94,6 @@ class HelpEntity {
 
   void assignHelper(String uuid) {
     this.helperId = uuid;
+    this.state = State.RESERVED;
   }
 }

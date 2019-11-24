@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
     this.notificationService.onAction().subscribe(
       (action) => {
         console.log("Received notification action", action);
-        this.router.navigate(["request-help"]) //todo when list will be available
+        this.router.navigate(["help-list"]) //todo when list will be available
       }
     )
 
