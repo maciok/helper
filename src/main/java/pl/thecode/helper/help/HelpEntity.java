@@ -1,5 +1,6 @@
 package pl.thecode.helper.help;
 
+import static java.util.function.Predicate.not;
 import static javax.persistence.EnumType.STRING;
 import static lombok.AccessLevel.PRIVATE;
 import static pl.thecode.helper.help.HelpEntity.TABLE_NAME;
@@ -79,6 +80,7 @@ class HelpEntity {
 
   List<Disabilities> getNeedyDisabilities() {
     return Stream.of(needyDisabilities.split(DELIMITER))
+                 .filter(not(String::isEmpty))
                  .map(Disabilities::valueOf)
                  .collect(Collectors.toUnmodifiableList());
 
