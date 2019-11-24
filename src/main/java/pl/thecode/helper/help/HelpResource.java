@@ -6,7 +6,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.thecode.helper.user.UserFacade;
@@ -57,8 +55,17 @@ class HelpResource {
     return ResponseEntity.ok(allRequests);
   }
   
+  @GetMapping(value = "/api/help/{helpId}", produces = APPLICATION_JSON_VALUE)
+  ResponseEntity<HelpDto> fetchSingle(@PathVariable("helpId") long helpId) {
+
+    return helpRepository.findById(helpId)
+      .map(HelpEntity::createDto)
+      .map(ResponseEntity::ok)
+      .orElse(ResponseEntity.notFound().build());
+  }
+  
   @DeleteMapping(value = "/api/help/{helpId}", consumes = APPLICATION_JSON_VALUE)
-  ResponseEntity close(@PathVariable("helpId") Long helpId) {
+  ResponseEntity close(@PathVariable("helpId") long helpId) {
     var help = helpRepository.findById(helpId)
                              .orElseThrow(() -> new IllegalStateException(format("Cannot find request for '%d'", helpId)));
     help.close();

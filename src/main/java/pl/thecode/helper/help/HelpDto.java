@@ -2,7 +2,7 @@ package pl.thecode.helper.help;
 
 import java.util.List;
 import lombok.Value;
-import pl.thecode.helper.user.Disabilities;
+import pl.thecode.helper.user.DescriptiveDisability;
 
 @Value
 class HelpDto {
@@ -15,7 +15,7 @@ class HelpDto {
   private String localization;
   // private LocalDateTime creationDate;
 
-  private List<Disabilities> disabilities;
+  private List<DescriptiveDisability> disabilities;
 
 
 }

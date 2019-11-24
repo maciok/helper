@@ -85,8 +85,12 @@ class HelpEntity {
   }
 
   HelpDto createDto() {
+    var needyDisabilities = getNeedyDisabilities().stream()
+                                                  .map(Disabilities::createDescriptive)
+                                                  .collect(Collectors.toList());
+
     return new HelpDto(
-      id, state, timeBox, category, description, localization, getNeedyDisabilities()
+      id, state, timeBox, category, description, localization, needyDisabilities
     );
   }
 
