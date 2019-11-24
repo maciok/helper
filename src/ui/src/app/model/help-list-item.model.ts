@@ -3,7 +3,7 @@ import {HelpCategory} from "./help-category.model";
 
 export interface HelpListItem {
   id: string;
-  state: string;
+  state?: string;
   timeBox: Timebox;
   category: HelpCategory;
   description: string;
