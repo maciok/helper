@@ -1,5 +1,5 @@
-<h4>Prośby o pomoc:</h4>
-<!--<div #mapRef style="width:100%;height:400px"></div>-->
+<h4 style="margin-left: 16px">Prośby o pomoc:</h4>
+
 <mat-accordion>
   <mat-expansion-panel (opened)="mockedItem.open = true" (closed)="mockedItem.open = false">
     <mat-expansion-panel-header>
@@ -11,7 +11,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <p>{{ mockedItem.description }}</p>
-
+    <div #mapRef style="width:100%;height:400px; margin-bottom: 10px; margin-top: 5px"></div>
     <button mat-raised-button color="primary" (click)="offerHelp(mockedItem.id)">Zaoferuj swoją pomoc</button>
   </mat-expansion-panel>
   <ng-container *ngFor="let item of items; let i = index;">

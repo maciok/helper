@@ -24,8 +24,9 @@ import {UserModule} from "./user/user.module";
 import {NotificationService} from "./registration/notification.service";
 import {RequestHelpComponent} from './request-help/request-help.component';
 import {HttpClientModule} from "@angular/common/http";
-import { HelpListComponent } from "./help-list/help-list.component";
-import { MatExpansionModule } from "@angular/material/expansion";
+import {HelpListComponent} from "./help-list/help-list.component";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {HelpService} from "./help-list/help.service";
 
 @NgModule({
   declarations: [
@@ -56,7 +57,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
     HttpClientModule,
     MatExpansionModule,
   ],
-  providers: [NotificationService],
+  providers: [NotificationService, HelpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
