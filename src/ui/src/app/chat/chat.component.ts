@@ -36,6 +36,10 @@ export class ChatComponent implements OnInit {
       const msg = this.messageControl.value as string;
 
       this.mockedMessages.push({content: msg, owner: "VOLUNTEER"});
+      setTimeout(() => {
+        this.mockedMessages.push({content: 'Sprawa wygląda tak:', owner: "NEEDY"});
+      }, 2000);
+      this.messageControl.setValue('')
       this.messages = of(this.mockedMessages);
     }
   }

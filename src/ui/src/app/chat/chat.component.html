@@ -8,7 +8,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <p>
     <mat-form-field>
-      <input type="text" matInput placeholder="Wpisz wiadomość...">
+      <input type="text" [formControl]="messageControl" matInput placeholder="Wpisz wiadomość...">
     </mat-form-field>
   </p>
   <button type="submit" mat-raised-button>Wyślij</button>
