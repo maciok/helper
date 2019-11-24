@@ -9,8 +9,6 @@ import {UserWarning} from "./model/user-warning.model";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'ui';
-
 
   constructor(
     private userService: UserService,
@@ -19,7 +17,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.load()
+    /*this.userService.load()
       .subscribe(
         u => {
           if (u.warnings.includes(UserWarning.NOT_REGISTERED)) {
@@ -33,7 +31,7 @@ export class AppComponent implements OnInit {
             console.log("Something went wrong") //todo
           }
         }
-      )
+      )*/
 
 
   }

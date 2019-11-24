@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { HttpClient } from "@angular/common/http";
 import { HelpRequestsService } from "../service/help-requests.service";
 import { HelpRequest } from "../model/help-request.model";
+import { HelpCategory } from "../model/help-category.model";
 
 @Component({
   selector: 'app-request-help',
@@ -13,6 +13,7 @@ import { HelpRequest } from "../model/help-request.model";
 export class RequestHelpComponent implements OnInit {
 
   form: FormGroup;
+  helpCategoryValues: string[] = [];
 
   constructor(private fb: FormBuilder,
               private service: HelpRequestsService,
@@ -20,6 +21,9 @@ export class RequestHelpComponent implements OnInit {
   }
 
   ngOnInit() {
+    for (let value in HelpCategory) {
+      this.helpCategoryValues.push(value);
+    }
     this.form = this.fb.group({
       timebox: this.fb.control('', Validators.required),
       category: this.fb.control('', Validators.required),
@@ -58,10 +62,11 @@ export class RequestHelpComponent implements OnInit {
 
   private saveHelpRequest(coords: Coordinates): void {
     const req = {
-      timebox: this.timeboxControl.value,
+      helpTimeBox: this.timeboxControl.value,
       category: this.categoryControl.value,
-      description: this.descriptionControl. value,
-      coords: coords
+      description: this.descriptionControl.value,
+      localizationConsent: this.localizationConsentControl.value,
+      localization: coords ? `${coords.longitude}_${coords.latitude}` : null
     } as HelpRequest;
     this.service.save(req).subscribe(() => this.router.navigate(['']));
   }

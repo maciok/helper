@@ -22,16 +22,21 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDividerModule } from "@angular/material/divider";
 import { UserModule } from "./user/user.module";
 import { RequestHelpComponent } from './request-help/request-help.component';
+import { HelpListComponent } from './help-list/help-list.component';
+import { MatExpansionModule } from "@angular/material/expansion";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   declarations: [
     AppComponent,
     RegistrationComponent,
     DashboardComponent,
-    RequestHelpComponent
+    RequestHelpComponent,
+    HelpListComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
     BrowserAnimationsModule,
@@ -47,7 +52,8 @@ import { RequestHelpComponent } from './request-help/request-help.component';
     MatSelectModule,
     MatCheckboxModule,
     MatDividerModule,
-    UserModule
+    UserModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

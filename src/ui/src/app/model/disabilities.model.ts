@@ -1,9 +1,9 @@
 export enum Disabilities {
-  VISION_IMPAIRMENT,
-  HEARING_IMPAIRMENT,
-  CARDIOVASCULAR_DISEASES,
-  DIABETES,
-  PREGNANCY,
-  ALLERGIES,
-  SPINAL_DISEASES,
+  VISION_IMPAIRMENT = 'Wzrokowe',
+  HEARING_IMPAIRMENT = 'Słuchowe',
+  CARDIOVASCULAR_DISEASES = 'Choroby serca',
+  DIABETES = 'Cukrzyca',
+  PREGNANCY = 'Ciąża',
+  ALLERGIES = 'Alergia',
+  SPINAL_DISEASES = 'Choroby kręgosłupa',
 }
