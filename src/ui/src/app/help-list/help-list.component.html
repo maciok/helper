@@ -12,7 +12,7 @@
     </mat-expansion-panel-header>
     <p>{{ mockedItem.description }}</p>
     <div #mapRef style="width:100%;height:400px; margin-bottom: 10px; margin-top: 5px"></div>
-    <button mat-raised-button color="primary" (click)="offerHelp(mockedItem.id)">Zaoferuj swoją pomoc</button>
+    <button mat-raised-button color="primary" (click)="offerHelp(mockedItem)">Zaoferuj swoją pomoc</button>
   </mat-expansion-panel>
   <ng-container *ngFor="let item of items; let i = index;">
   <mat-expansion-panel (opened)="item.open = true" (closed)="item.open = false">

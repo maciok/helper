@@ -28,7 +28,7 @@ export class HelpListComponent implements OnInit {
   ngOnInit() {
 
     this.mockedItem = {
-      id: 999,
+      id: '999',
       category: HelpCategory.TRANSPORT,
       description: 'Potrzebuję pomocy w pomocy w dotarciu do Starej Iwnicznej',
       timeBox: Timebox.DAY,
