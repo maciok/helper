@@ -4,9 +4,10 @@
       <mat-label>Przedział czasowy</mat-label>
       <mat-select [formControl]="timeboxControl">
         <mat-option [value]="0">Natychmiast (zagrożenie zdrowia i życia)</mat-option>
-        <mat-option [value]="1">Godzina</mat-option>
-        <mat-option [value]="2">Dzisiaj</mat-option>
-        <mat-option [value]="3">Nieokreślony</mat-option>
+        <mat-option [value]="1">Teraz</mat-option>
+        <mat-option [value]="2">Najbliższe godziny</mat-option>
+        <mat-option [value]="3">Dzisiaj</mat-option>
+        <mat-option [value]="4">Nie istotne</mat-option>
       </mat-select>
       <mat-hint align="end">Wybierz w jakim terminie potrzebujesz pomocy.</mat-hint>
     </mat-form-field>
@@ -17,6 +18,9 @@
       <mat-select [formControl]="categoryControl">
         <mat-option [value]="0">Transport</mat-option>
         <mat-option [value]="1">Komunikacja</mat-option>
+        <mat-option [value]="2">Pomoc fizyczna</mat-option>
+        <mat-option [value]="3">Wsparcie</mat-option>
+        <mat-option [value]="4">Inne</mat-option>
       </mat-select>
       <mat-hint align="end">Określ rodzaj wsparcia jakie potrzebujesz.</mat-hint>
     </mat-form-field>

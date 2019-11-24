@@ -24,13 +24,16 @@ import {UserModule} from "./user/user.module";
 import {NotificationService} from "./registration/notification.service";
 import {RequestHelpComponent} from './request-help/request-help.component';
 import {HttpClientModule} from "@angular/common/http";
+import { HelpListComponent } from "./help-list/help-list.component";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
     AppComponent,
     RegistrationComponent,
     DashboardComponent,
-    RequestHelpComponent
+    RequestHelpComponent,
+    HelpListComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +54,7 @@ import {HttpClientModule} from "@angular/common/http";
     MatDividerModule,
     UserModule,
     HttpClientModule,
+    MatExpansionModule,
   ],
   providers: [NotificationService],
   bootstrap: [AppComponent]

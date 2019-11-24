@@ -1,8 +1,8 @@
-<h1>Dashboard</h1>
+<h3 *ngIf="name">Witaj {{ name }}</h3>
 
-<mat-grid-list cols="2">
+<mat-grid-list cols="1" rowHeight="2:1">
 
-  <mat-grid-tile colspan="2">
+  <mat-grid-tile>
     <mat-card>
       <mat-card-header>
         <mat-card-title>
@@ -13,7 +13,7 @@
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-actions>
-        <button mat-raised-button>Zgłoś potrzebę</button>
+        <button mat-raised-button color="primary" (click)="getHelp()">Zgłoś potrzebę</button>
       </mat-card-actions>
     </mat-card>
   </mat-grid-tile>
@@ -21,16 +21,18 @@
   <mat-grid-tile>
     <mat-card>
       <mat-card-header>
-        Other option
+        <mat-card-title>
+          Zaoferuj pomoc
+        </mat-card-title>
+        <mat-card-subtitle>
+          Jeśli chcesz udzielić komuś pomocy kliknij przycisk poniżej.
+        </mat-card-subtitle>
       </mat-card-header>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="giveHelp()">Zaoferuj pomoc</button>
+      </mat-card-actions>
     </mat-card>
   </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-card>
-      <mat-card-header>
-        Other option
-      </mat-card-header>
-    </mat-card>
-  </mat-grid-tile>
+
 </mat-grid-list>
 
