@@ -1,8 +1,9 @@
-import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { HelpListItem } from "../model/help-list-item.model";
-import { HelpCategory } from "../model/help-category.model";
-import { Timebox } from "../model/timebox.model";
-import {} from 'googlemaps';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {HelpListItem} from "../model/help-list-item.model";
+import {HelpCategory} from "../model/help-category.model";
+import {Timebox} from "../model/timebox.model";
+import {HelpService} from "./help.service";
+import {Help} from "../model/help-request.model";
 
 @Component({
   selector: 'app-help-list',
@@ -12,52 +13,67 @@ import {} from 'googlemaps';
 export class HelpListComponent implements OnInit {
 
   items: HelpListItem[] = [];
+  mockedItem: HelpListItem;
 
-  // @ViewChild('mapRef', {static: true}) mapElement: ElementRef;
+  @ViewChild('mapRef', {static: true}) mapElement: ElementRef;
   map: google.maps.Map;
 
-  constructor() { }
-
-  ngOnInit() {
-    const sampleItem1 = {
-      id: 1,
-      category: HelpCategory.TRANSPORT,
-      description: 'Some longer description for request from list',
-      timeBox: Timebox.DAY,
-      localization: '123_123',
-      open: false,
-    } as HelpListItem;
-    const sampleItem2 = {
-      id: 2,
-      category: HelpCategory.TRANSPORT,
-      description: 'Some longer description for request from list',
-      timeBox: Timebox.DAY,
-      localization: '123_123',
-      open: false,
-    } as HelpListItem;
-    this.items.push(sampleItem1);
-    this.items.push(sampleItem2);
+  constructor(private helpService: HelpService) {
   }
 
-  /*ngAfterViewChecked(): void {
+  ngOnInit() {
+
+    this.mockedItem = {
+      id: 999,
+      category: HelpCategory.TRANSPORT,
+      description: 'Potrzebuję pomocy w pomocy w dotarciu do Starej Iwnicznej',
+      timeBox: Timebox.DAY,
+      localization: '123_123',
+      open: false,
+    } as HelpListItem
+
+    this.helpService.load()
+      .subscribe(
+        (response: Help[]) => this.items = HelpListComponent.itemsFromResponse(response),
+        err => console.error(err)
+      );
+
+
     const mapProperties = {
-      center: new google.maps.LatLng(35.2271, -80.8431),
+      center: new google.maps.LatLng(52.239381, 21.047299),
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
-    const map = new google.maps.Map(this.mapElement.nativeElement, mapProperties);
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapProperties);
 
-    const marker = new window['google'].maps.Marker({
-      position: {lat: 35.2271, lng: -80.8431},
-      map: map,
+    var marker = new window['google'].maps.Marker({
+      position: {lat: 52.239381, lng: 21.047299},
+      map: this.map,
       title: 'Hello World!',
       draggable: false,
       animation: window['google'].maps.Animation.DROP,
     });
-  }*/
+  }
+
+
 
   offerHelp(id: number): void {
     // TODO
+  }
+
+  private static itemsFromResponse(response: Help[]) {
+    return response.map(h => HelpListComponent.itemFromHelp(h))
+  }
+
+  private static itemFromHelp(help: Help) {
+    return {
+      id: help.id,
+      category: help.category,
+      description: help.description,
+      timeBox: help.helpTimeBox,
+      localization: null,
+      open: false,
+    }
   }
 }

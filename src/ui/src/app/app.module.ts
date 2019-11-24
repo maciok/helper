@@ -60,7 +60,7 @@ import { MatListModule } from "@angular/material/list";
     MatExpansionModule,
     MatListModule,
   ],
-  providers: [NotificationService],
+  providers: [NotificationService, HelpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
