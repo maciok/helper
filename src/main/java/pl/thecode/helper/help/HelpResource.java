@@ -1,12 +1,14 @@
 package pl.thecode.helper.help;
 
 import static java.lang.String.format;
+import static java.util.Objects.isNull;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -14,8 +16,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import pl.thecode.helper.chat.ChatDto;
+import pl.thecode.helper.chat.ChatFacade;
 import pl.thecode.helper.user.UserFacade;
 
 @RestController
@@ -24,7 +29,8 @@ class HelpResource {
 
   private final HelpRepository helpRepository;
   private final UserFacade userFacade;
-
+  private final ChatFacade chatFacade;
+  
   @PostMapping(value = "/api/help", consumes = APPLICATION_JSON_VALUE)
   ResponseEntity request(
     @AuthenticationPrincipal OAuth2AuthenticationToken userInfo,
@@ -59,9 +65,27 @@ class HelpResource {
   ResponseEntity<HelpDto> fetchSingle(@PathVariable("helpId") long helpId) {
 
     return helpRepository.findById(helpId)
-      .map(HelpEntity::createDto)
-      .map(ResponseEntity::ok)
-      .orElse(ResponseEntity.notFound().build());
+                         .map(HelpEntity::createDto)
+                         .map(ResponseEntity::ok)
+                         .orElse(ResponseEntity.notFound().build());
+  }
+
+  @PutMapping("/api/help/{helpId}/assigned")
+  ResponseEntity<ChatDto> assign(@PathVariable("helpId") long helpId, @AuthenticationPrincipal OAuth2AuthenticationToken userInfo) {
+    var helpRequest = helpRepository.findById(helpId)
+                                    .orElseThrow(() -> new IllegalArgumentException(format("Cannot find help regest '%d'", helpId)));
+
+    var uuid = (String) userInfo.getPrincipal().getAttribute("sub");
+    if (isNull(helpRequest.getHelperId())) {
+      helpRequest.assignHelper(uuid);
+      helpRepository.save(helpRequest);
+    } else {
+      return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+    var newChat = chatFacade.createNewChat(helpRequest.getNeedyId(), helpRequest.getHelperId());
+    return ResponseEntity.ok(newChat);
+    
   }
   
   @DeleteMapping(value = "/api/help/{helpId}", consumes = APPLICATION_JSON_VALUE)

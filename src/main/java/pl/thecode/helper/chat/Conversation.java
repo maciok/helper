@@ -33,6 +33,10 @@ class Conversation {
 
   public static final String TABLE_NAME = "conversation";
 
+  public static Conversation createNew(String needyId, String volunteerId) {
+    return new Conversation(needyId, volunteerId, new ArrayList<>());
+  }
+  
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "conversation_gen")
   @SequenceGenerator(name = "conversation_gen", sequenceName = "conversation_seq", allocationSize = 1, initialValue = 100)
@@ -62,5 +66,9 @@ class Conversation {
     ChatUser user = needyId.equals(userId) ? NEEDY : VOLUNTEER;
     var newMessage = new Message(user, message.getClientTimestamp(), message.getContent());
     messages.add(newMessage);
+  }
+
+  ChatDto toDto() {
+    return new ChatDto(id);
   }
 }

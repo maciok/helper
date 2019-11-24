@@ -97,4 +97,8 @@ class HelpEntity {
   void close() {
     this.state = State.CLOSED;
   }
+
+  void assignHelper(String uuid) {
+    this.helperId = uuid;
+  }
 }

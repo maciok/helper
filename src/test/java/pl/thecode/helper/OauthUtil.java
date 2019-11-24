@@ -9,8 +9,12 @@ import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 public class OauthUtil {
 
   public static org.springframework.security.core.Authentication oauth() {
+    return oauth("1234567");
+  }
+
+  public static org.springframework.security.core.Authentication oauth(String userId) {
     Map<String, Object> attributes = Map.of(
-      "sub", "1234567",
+      "sub", userId,
       "given_name", "Imie",
       "family_name", "Nazwisko",
       "picture", "Obrazek"

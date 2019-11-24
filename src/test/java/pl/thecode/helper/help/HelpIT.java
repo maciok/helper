@@ -15,20 +15,24 @@ import static pl.thecode.helper.user.Disabilities.DIABETES;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.util.List;
 import java.util.Map;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.context.WebApplicationContext;
+import pl.thecode.helper.chat.ChatUtils;
 import pl.thecode.helper.user.UserUtils;
 
 @SpringBootTest
 @ActiveProfiles("local")
 class HelpIT {
 
-  public static final String SOME_USER_ID = "1234567";
-  public static final String OTHER_USER_ID = "7654321";
+  static final String SOME_USER_ID = "1234567";
+  static final String OTHER_USER_ID = "7654321";
+
   @Autowired
   WebApplicationContext context;
 
@@ -37,6 +41,9 @@ class HelpIT {
 
   @Autowired
   UserUtils userUtils;
+  
+  @Autowired
+  ChatUtils chatUtils;
 
   @BeforeEach
   void setup() {
@@ -131,7 +138,30 @@ class HelpIT {
       .statusCode(200);
 
     // after
-//    helpRepository.deleteById(helpId);
+    helpRepository.deleteById(helpId);
+  }
+
+  @Test
+  void assignToHelpRequest() {
+    var helpId = createSingleRequest();
+
+    given()
+
+      .auth()
+      .authentication(oauth(OTHER_USER_ID))
+      .contentType(JSON)
+
+      .when()
+      .put("/api/help/{helpId}/assigned", helpId)
+
+      .then()
+      .log().all()
+      .statusCode(200)
+      .body("chatId", Matchers.equalTo(1000));
+
+    // after
+    chatUtils.cleanConversations();
+    helpRepository.deleteById(helpId);
   }
 
   private long createSingleRequest() {
