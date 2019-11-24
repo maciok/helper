@@ -9,12 +9,13 @@ CREATE SEQUENCE help_request_seq
 
 CREATE TABLE help_request
 (
-    id           BIGINT       NOT NULL PRIMARY KEY,
-    needy_id     VARCHAR(255) NOT NULL,
-    helper_id    VARCHAR(255),
-    localization VARCHAR(255),
-    time_box     TIMEBOX      NOT NULL,
-    category     CATEGORY     NOT NULL,
-    description  TEXT,
-    state        STATE        NOT NULL
+    id                 BIGINT       NOT NULL PRIMARY KEY,
+    needy_id           VARCHAR(255) NOT NULL,
+    helper_id          VARCHAR(255),
+    needy_disabilities TEXT,
+    localization       VARCHAR(255),
+    time_box           TIMEBOX      NOT NULL,
+    category           CATEGORY     NOT NULL,
+    description        TEXT,
+    state              STATE        NOT NULL
 );

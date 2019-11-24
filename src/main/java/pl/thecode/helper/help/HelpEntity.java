@@ -4,6 +4,9 @@ import static javax.persistence.EnumType.STRING;
 import static lombok.AccessLevel.PRIVATE;
 import static pl.thecode.helper.help.HelpEntity.TABLE_NAME;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
@@ -18,6 +21,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnTransformer;
+import pl.thecode.helper.user.Disabilities;
+
+
+// @todo add creation date
 
 @Entity
 @Table(name = TABLE_NAME)
@@ -28,16 +35,7 @@ class HelpEntity {
 
   public static final String TABLE_NAME = "help_request";
 
-  HelpEntity(
-    String needyId, String localization, TimeBox timeBox, Category category, String description
-  ) {
-    this.needyId = needyId;
-    this.localization = localization;
-    this.timeBox = timeBox;
-    this.category = category;
-    this.description = description;
-    this.state = State.NEW;
-  }
+  private static final String DELIMITER = ",";
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "help_request_gen")
@@ -45,8 +43,9 @@ class HelpEntity {
   private long id;
 
   private String needyId;
+
+  private String needyDisabilities;
   private String helperId;
-  
   private String localization;
 
   @Enumerated(STRING)
@@ -58,11 +57,36 @@ class HelpEntity {
   @ColumnTransformer(read = "category::text", write = "?::Category")
   @Column(name = "category")
   private Category category;
+
   private String description;
-  
+
   @Enumerated(STRING)
   @ColumnTransformer(read = "state::text", write = "?::State")
   @Column(name = "state")
   private State state;
 
+  HelpEntity(
+    String needyId, List<Disabilities> disabilities, String localization, TimeBox timeBox, Category category, String description
+  ) {
+    this.needyId = needyId;
+    this.needyDisabilities = disabilities.stream().map(Disabilities::name).collect(Collectors.joining(DELIMITER));
+    this.localization = localization;
+    this.timeBox = timeBox;
+    this.category = category;
+    this.description = description;
+    this.state = State.NEW;
+  }
+
+  List<Disabilities> getNeedyDisabilities() {
+    return Stream.of(needyDisabilities.split(DELIMITER))
+                 .map(Disabilities::valueOf)
+                 .collect(Collectors.toUnmodifiableList());
+
+  }
+
+  HelpDto createDto() {
+    return new HelpDto(
+      id, state, timeBox, category, description, localization, getNeedyDisabilities()
+    );
+  }
 }
