@@ -1,5 +1,7 @@
 package pl.thecode.helper.user;
 
+import static java.util.function.Predicate.not;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -61,12 +63,14 @@ class UserEntity {
 
     List<Role> getRoles() {
         return Stream.of(roles.split(DELIMITER))
+                     .filter(not(String::isEmpty))
                      .map(Role::valueOf)
                      .collect(Collectors.toUnmodifiableList());
     }
 
     List<Disabilities> getDisabilities() {
         return Stream.of(disabilities.split(DELIMITER))
+                     .filter(not(String::isEmpty))
                      .map(Disabilities::valueOf)
                      .collect(Collectors.toUnmodifiableList());
     }
