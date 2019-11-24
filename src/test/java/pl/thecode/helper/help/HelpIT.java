@@ -15,7 +15,6 @@ import static pl.thecode.helper.user.Disabilities.DIABETES;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,6 +111,27 @@ class HelpIT {
 
     // after
     helpRepository.deleteAll();
+  }
+  
+  @Test
+  void fetchSingleHelpRequest() {
+    var helpId = createSingleRequest();
+    
+    given()
+
+      .auth()
+      .authentication(oauth())
+      .contentType(JSON)
+
+      .when()
+      .get("/api/help/{helpId}", helpId)
+
+      .then()
+      .log().all()
+      .statusCode(200);
+
+    // after
+//    helpRepository.deleteById(helpId);
   }
 
   private long createSingleRequest() {
