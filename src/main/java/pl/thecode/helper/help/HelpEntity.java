@@ -89,4 +89,8 @@ class HelpEntity {
       id, state, timeBox, category, description, localization, getNeedyDisabilities()
     );
   }
+
+  void close() {
+    this.state = State.CLOSED;
+  }
 }

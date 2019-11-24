@@ -2,9 +2,11 @@ package pl.thecode.helper.help;
 
 import static com.jayway.restassured.http.ContentType.JSON;
 import static com.jayway.restassured.module.mockmvc.RestAssuredMockMvc.given;
+import static org.assertj.core.api.Assertions.assertThat;
 import static pl.thecode.helper.OauthUtil.oauth;
 import static pl.thecode.helper.help.Category.PHYSICAL_HELP;
 import static pl.thecode.helper.help.Category.SUPPORT;
+import static pl.thecode.helper.help.State.CLOSED;
 import static pl.thecode.helper.help.TimeBox.NOW;
 import static pl.thecode.helper.help.TimeBox.URGENT;
 import static pl.thecode.helper.user.Disabilities.ALLERGIES;
@@ -13,6 +15,7 @@ import static pl.thecode.helper.user.Disabilities.DIABETES;
 import com.jayway.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +87,45 @@ class HelpIT {
 
     // after
     helpRepository.deleteAll();
+  }
+
+  @Test
+  void closeHelpRequest() {
+    var helpId = createSingleRequest();
+    
+    given()
+
+      .auth()
+      .authentication(oauth())
+      .contentType(JSON)
+
+      .when()
+      .delete("/api/help/{helpId}", helpId)
+
+      .then()
+      .log().all()
+      .statusCode(200);
+
+    var maybeHelp = helpRepository.findById(helpId);
+    assertThat(maybeHelp).isPresent();
+    assertThat(maybeHelp.get().getState()).isEqualTo(CLOSED);
+
+    // after
+    helpRepository.deleteAll();
+  }
+
+  private long createSingleRequest() {
+    var someHelp = new HelpEntity(
+      SOME_USER_ID,
+      List.of(ALLERGIES),
+      "123456",
+      URGENT,
+      PHYSICAL_HELP,
+      "Nothing to add"
+    );
+
+    return helpRepository.save(someHelp).getId();
+
   }
 
 
